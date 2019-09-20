@@ -1,0 +1,223 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block cssadd %}
+<link rel="stylesheet" href="{% static "plugins/iCheck/skins/flat/green.css" %}">
+
+{% endblock %}
+
+{% block contenido %}
+  <div class="right_col" role="main" style="min-height: 1274px;">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Perfil del Estudiante</h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h3>{{alumno.nombres|upper}} {{alumno.apellidos|upper}}</h3>
+              
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <!-- Perfil del usuario -->
+              <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                <div class="profile_img">
+                  <div id="crop-avatar">
+                    <!-- Current avatar -->
+                    <img class="img-responsive avatar-view" src="{{MEDIA_URL}}perfil/alumnos/perfil_default.png" alt="Avatar" title="Change the avatar">
+                  </div>
+                </div>
+
+                <ul class="list-unstyled user_data">
+                  <li><i class="fa fa-map-marker user-profile-icon"></i> {{alumno.lugarnac|title}}
+                  </li>
+
+                  <li>
+                    <i class="fa fa-envelope user-profile-icon"></i> {{alumno.correo}}
+                  </li>
+
+                  <li class="m-top-xs">
+                    {% if alumno.sexo == 'F' %}
+                    <i class="fa fa-female user-profile-icon"></i> {{alumno.get_sexo_display}}
+                    {% endif %}
+                    {% if alumno.sexo == 'M' %}
+                    <i class="fa fa-male user-profile-icon"></i> {{alumno.get_sexo_display}}
+                    {% endif %}
+                    
+                  </li>
+                </ul>
+
+                <a href="{% url 'editar_datos' alumno.id %}" class="btn btn-round btn-success btn-sm" title="Asignar"><span class="glyphicon glyphicon-edit" aria-hidden="true"> </span> Editar Perfil</a>
+
+
+              </div>
+
+              <!-- Datos Extras -->
+              <div class="col-md-9 col-sm-9 col-xs-12">
+
+              {% if mensaje %}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <strong>Actualización exitosa!</strong> Datos actualizados correctamente.
+                </div>
+              {% endif %}
+
+                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                  <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Perfil</a>
+                    </li>
+                    <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Representante</a>
+                    </li>
+                    <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Datos Academicos</a>
+                    </li>
+                  </ul>
+                  <div id="myTabContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                      <!-- Panel 1 -->
+                      {% for estudiante in alumno.datosalumno_set.all %}
+                      <form class="form-horizontal form-label-left">
+
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Peso: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{estudiante.peso}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Estatura: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{estudiante.estatura}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla de Camisa: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{estudiante.talla_c}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla de Pantalon: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{estudiante.talla_p}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Talla de Zapato: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{estudiante.talla_z}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Posee Canaima: </label>
+                            
+                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                {% if estudiante.canaima == True %}
+                                  <label class="control-label">Si</label>
+                                {% else %}
+                                  <label class="control-label">No</label>
+                                {% endif %}
+                            </div>
+                          
+                        </div>
+                        
+                      </form>
+                      {% endfor %}
+                      <!-- Final del Panel -->
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                      <!-- Panel 2 -->
+                      {% for representante in alumno.represenalumno_set.all %}
+                      <form class="form-horizontal form-label-left">
+
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombres: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                              <label class="control-label">{{representante.nombres}}</label>
+                          </div>
+                          
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Apellidos: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{representante.apellidos}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Nacionalidad: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{representante.get_nacionalidad_display}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Genero: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{representante.get_sexo_display}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Telefono: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{representante.telefono}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Dirección: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{representante.direccion}}</label>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Nivel Academico: </label>
+                          <div class="col-md-9 col-sm-9 col-xs-12">
+                            <label class="control-label">{{representante.nivel_academico}}</label>
+                          </div>
+                        </div>
+                        
+                      </form>
+                      {% endfor %}
+                      <!-- Final del Panel -->
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+
+                      <!-- Panel 3 -->
+                      
+                      <!-- Final del Panel -->
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block jsadd %}
+  <script src="{% static "plugins/iCheck/icheck.min.js" %}"></script>
+
+{% endblock %}

@@ -1,0 +1,333 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block cssadd %}
+  <!-- DatePicker -->
+  <link rel="stylesheet" href="{% static "plugins/jQuery-Smart-Wizard/css/smart_wizard.min.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/jQuery-Smart-Wizard/css/smart_wizard_theme_arrows.min.css" %}">
+  <link rel="stylesheet" href="{% static "plugins/datepicker/datepicker3.css" %}">
+{% endblock %}
+{% block contenido %}
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Editar Perfil</h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                              <button class="btn btn-default" type="button">Go!</button>
+                          </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Estudiante: {{form.nombres.value|upper}} {{form.apellidos.value|upper}}</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  
+                    {% for field in form %}
+                      {% if field.errors %}
+                        {{field.label_tag}} {{field.errors}} 
+                      {% endif %}
+                    {% endfor %}
+                  
+                  <div class="x_content">
+
+                    <form class="form-horizontal form-label-left" id="myForm" role="form" data-toggle="validator" method="POST" accept-charset="utf-8">
+                      {% csrf_token %}
+                    <div id="smartwizard" class="sw-main sw-theme-default">
+                      <ul>
+                          <li><a href="#step-1">Paso 1<br /><small>Datos del Estudiante</small></a></li>
+                          <li><a href="#step-2">Paso 2<br /><small>Perfil del Estudiante</small></a></li>
+                          <li><a href="#step-3">Paso 3<br /><small>Datos del Representante</small></a></li>
+                      </ul>
+                        
+                      <div>
+                        <div id="step-1" class="">
+                            <div id="form-step-0" role="form" data-toggle="validator">
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nombres: <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  {{form.nombres}}
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Apellidos: <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12" >
+                                  {{form.apellidos}}
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Cedula: <span class="required">*</span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  {{form.cedula}}
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Nacionalidad: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  {{form.nacionalidad}}
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Genero: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  {{form.sexo}}
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha de Nacimiento: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  {{form.fchanac}}
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Lugar de Nacimiento: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  {{form.lugarnac}}
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Correo: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  {{form.correo}}
+                                  <div class="help-block with-errors"></div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div id="step-2" class="">
+                          <div id="form-step-1" role="form" data-toggle="validator">
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Peso: </label>
+                              <div class="col-md-2 col-sm-2 col-xs-2">
+                                {{form.datos.peso}}
+                                <div class="help-block with-errors"></div>
+                              </div>
+                              <label class="control-label col-md-1 col-sm-1 col-xs-1" for="first-name" style="text-align:left">Kg </label>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Estatura: </label>
+                              <div class="col-md-2 col-sm-2 col-xs-2">
+                                {{form.datos.estatura}}
+                                <div class="help-block with-errors"></div>
+                              </div>
+                              <label class="control-label col-md-1 col-sm-1 col-xs-1" for="first-name" style="text-align:left">Mts </label>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Talla de Camisa: </label>
+                              <div class="col-md-2 col-sm-2 col-xs-2">
+                                {{form.datos.talla_c}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Talla Pantalon: </label>
+                              <div class="col-md-2 col-sm-2 col-xs-2">
+                                {{form.datos.talla_p}}
+                                <div class="help-block with-errors"></div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Talla Zapato: </label>
+                              <div class="col-md-2 col-sm-2 col-xs-2">
+                                {{form.datos.talla_z}}
+                                <div class="help-block with-errors"></div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Posee Canaima: </label>
+                              <div class="col-md-1 col-sm-1 col-xs-12">
+                                {{form.datos.canaima}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Telefono: </label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.datos.telefono}}
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="step-3" class="">  
+                          <div id="form-step-2" role="form" data-toggle="validator">
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nombres: <span class="required">*</span></label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.nombres}}
+                                <div class="help-block with-errors"></div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Apellidos: <span class="required">*</span></label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.apellidos}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Cedula: <span class="required">*</span></label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.cedula}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nacionalidad: </label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.nacionalidad}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Genero: </label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.sexo}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nivel Academico: </label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.nivel_academico}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Telfono: </label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.telefono}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Dirección: </label>
+                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                {{form.repres.direccion}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+{% endblock %}
+
+{% block jsadd %}
+
+  <!-- Smart Wizard -->
+  <script src="{% static "plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.min.js" %}"></script>
+  <script src="{% static "plugins/jQuery-Smart-Wizard/js/validator.min.js" %}"></script>
+  <!-- DatePicker -->
+    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
+  <!-- jquery.inputmask -->
+    <script src="{% static "plugins/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js" %}"></script>
+<script>
+
+  $(document).ready(function(){
+        
+    $('#datepicker').datepicker({
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+    });
+
+    // Toolbar extra buttons
+    var btnFinish = $('<button></button>').text('Finalizar')
+     .addClass('btn btn-info')
+     .on('click', function(){ 
+            if( !$(this).hasClass('disabled')){ 
+                var elmForm = $("#myForm");
+                if(elmForm){
+                    elmForm.validator('validate'); 
+                    var elmErr = elmForm.find('.has-error');
+                    if(elmErr && elmErr.length > 0){
+                        alert('Oops!! Ha ocurrido un error, verifique los datos');
+                        return false;    
+                    }else{
+                        elmForm.submit();
+                        return false;
+                    }
+                }
+            }
+        });
+    var btnCancel = $('<button></button>').text('Cancelar')
+     .addClass('btn btn-danger')
+     .on('click', function(){ 
+            $('#smartwizard').smartWizard("reset"); 
+            $('#myForm').find("input, textarea").val("");
+            $('#myForm').find("input, select").val(""); 
+        });                         
+    
+    
+    
+    // Smart Wizard
+    $('#smartwizard').smartWizard({ 
+      selected: 0, 
+      theme: 'dots',
+      transitionEffect:'fade',
+      toolbarSettings: {toolbarPosition: 'bottom',
+                        toolbarExtraButtons: [btnFinish, btnCancel]
+                      },
+      anchorSettings: {
+                  markDoneStep: true, // add done css
+                  markAllPreviousStepsAsDone: true, // When a step selected by url hash, all previous steps are marked done
+                  removeDoneStepOnNavigateBack: true, // While navigate back done step after active step will be cleared
+                  enableAnchorOnDoneStep: true // Enable/Disable the done steps navigation
+              }
+    });
+    
+    $("#smartwizard").on("leaveStep", function(e, anchorObject, stepNumber, stepDirection) {
+        var elmForm = $("#form-step-" + stepNumber);
+        // stepDirection === 'forward' :- this condition allows to do the form validation 
+        // only on forward navigation, that makes easy navigation on backwards still do the validation when going next
+        if(stepDirection === 'forward' && elmForm){
+            elmForm.validator('validate'); 
+            var elmErr = elmForm.children('.has-error');
+            if(elmErr && elmErr.length > 0){
+                // Form validation failed
+                return false;    
+            }
+        }
+        return true;
+    });
+    
+    $("#smartwizard").on("showStep", function(e, anchorObject, stepNumber, stepDirection) {
+        // Enable finish button only on last step
+        if(stepNumber == 3){ 
+            $('.btn-finish').removeClass('disabled');  
+        }else{
+            $('.btn-finish').addClass('disabled');
+        }
+    }); 
+    
+        
+  });  
+  
+</script>
+
+{% endblock %}

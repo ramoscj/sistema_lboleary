@@ -1,0 +1,282 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block contenido %}
+  <!-- page content -->
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Cargar Notas de Estudiantes</h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_content">
+            </br>
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{form.as_p}}
+              <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="hojas_id" class="nav nav-tabs bar_tabs" role="tablist">
+                  <!-- Se crean los objetos del TAB con jquery -->
+                </ul>
+
+                <div id="area_id" class="tab-content">
+                  <!-- Se crean los paneles del TAB con jquery -->
+                </div>
+              </div>
+              <div class="ln_solid"></div>
+              <div class="form-group">
+                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                  <button type="button" class="btn btn-danger">Cancelar</button>
+                  <button type="submit" class="btn btn-success">Enviar</button>
+                </div>
+              </div>
+            </form>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /page content -->
+{% endblock %}
+
+{% block jsadd %}
+<script language="JavaScript">
+
+$(document).on("ready", function(){
+
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if(settings.type == "POST"){
+          xhr.setRequestHeader("X-CSRFToken", $('[name="csrfmiddlewaretoken"]').val());
+        }
+      }
+    });
+
+  // registrar();
+
+});
+  
+  var oFileIn;
+  var enviar = [];
+  var predata = [];
+  //Código JQuery
+  $(function() {
+    oFileIn = document.getElementById('my_file_input');
+    if (oFileIn.addEventListener) {
+      oFileIn.addEventListener('change', filePicked, false);
+
+    }
+  });
+
+  //Método que hace el proceso de importar excel a html
+  function filePicked(oEvent) {
+    // Obtener el archivo del input
+    var oFile = oEvent.target.files[0];
+    var sFilename = oFile.name;
+    // Crear un Archivo de Lectura HTML5
+    var reader = new FileReader();
+
+    // Leyendo los eventos cuando el archivo ha sido seleccionado
+    reader.onload = function(e) {
+      var data = e.target.result;
+      var wb = XLSX.read(data, {type: 'binary'});
+    
+      var hojas, area = [];
+      var id = 1;
+      var nombre_hoja = wb.SheetNames[0];
+      var celda = ['B', 'C'];
+      var celdas = ['F', 'H', 'J', 'L', 'N', 'P', 'R', 'T', 'V', 'X', 'Z', 'AB', 'AD', 'AF', 'AH'];
+      var celdas_porc = ['G', 'I', 'K', 'M', 'O', 'Q', 'S', 'U', 'W', 'Y', 'AA', 'AC', 'AE', 'AG', 'AI'];
+      
+      wb.SheetNames.forEach(function(sheetName) {
+        // Se almacena la hoja para leer
+        var hoja = wb.Sheets[sheetName];
+        var curso = [hoja["C3"].v, hoja["C4"].v, hoja["A7"].v];
+        var pks = [hoja["D3"].v, hoja["D6"].v, hoja["D7"].v];
+        // Se agrega un Tabs y se coloca activa la primera hoja
+        if (id === 1) {
+          hojas = "<li role='presentation' class='active'><a href='#H-"+ id +"' role='tab' data-toggle='tab' aria-expanded='true'>"+ sheetName +"</a> </li>"
+          // Se crea el panel que contendra la tabla del Tab
+          area = "<div role='tabpanel' class='tab-pane fade active in' id='H-"+ id +"' aria-labelledby='home-tab' style='width:100%;height:550px;overflow:scroll;'> <p class='lead'>"+ curso[0] +" "+ curso[1] +"</p> <p class='lead'>"+ curso[2] +"</p> <table class='table table-bordered' id='table_"+ id +"'> <thead> <tr id='titulo_"+ id +"'> <th>#</th> <th>Cédula</th> <th>Apellidos y Nombres</th> </tr> </thead> <tbody> </tbody> </table> <input type='hidden' name='pkcurso_"+ id +"' value='"+ pks[0] +"'> <input type='hidden' name='pklapso_"+ id +"' value='"+ pks[1] +"'> <input type='hidden' name='pkmateria_"+ id +"' value='"+ pks[2] +"'> </div>"
+        }
+        else {
+          hojas = "<li role='presentation'><a href='#H-"+ id +"' id='home-tab' role='tab' data-toggle='tab' aria-expanded='false'>"+ sheetName +"</a> </li>"
+          // Se crea el panel que contendra la tabla del Tab
+          area = "<div role='tabpanel' class='tab-pane fade' id='H-"+ id +"' aria-labelledby='home-tab'> <p class='lead'>"+ curso[0] +" "+ curso[1] +"</p> <p class='lead'>"+ curso[2] +"</p> <table class='table table-bordered' id='table_"+ id +"'> <thead> <tr id='titulo_"+ id +"'> <th>#</th> <th>Cédula</th> <th>Apellidos y Nombres</th> </tr> </thead> <tbody> </tbody> </table> <input type='hidden' name='pkcurso_"+ id +"' value='"+ pks[0] +"'> <input type='hidden' name='pklapso_"+ id +"' value='"+ pks[1] +"'> <input type='hidden' name='pkmateria_"+ id +"' value='"+ pks[2] +"'> </div>"
+        }
+        // Se cargan al HTML
+        $("#hojas_id").append(hojas);
+        $("#area_id").append(area);
+
+        // Variable para controlar las celdas
+        y = 10;
+        // Se recorre el archivo con las celdas espesificas a usar
+        for (var i= 1; i <50; i++) {
+          // Se vacia la variable para cada ciclo
+          var objeto_celda = "";
+          // Se crea la apertura de la columna
+          var sRow = "<tr>";
+          // Se guardan las celdas a usar con su respectiva coordenada
+          objeto_celda = [hoja[celda[0] + y], hoja[celda[1] + y]];
+          // Se guarda el valor contenido de celas espesificas "B" y "C"
+          var valor_celda = [(objeto_celda[0] ? objeto_celda[0].v : undefined), (objeto_celda[1] ? objeto_celda[1].v : undefined)];
+          // Se agregan los valores y se crean las filas, se verifica que no sea undefined
+          if (valor_celda[0] !== undefined){
+                sRow = sRow + "<td>" + i + "</td>";
+                sRow = sRow + "<td>" + valor_celda[0] + "</td>";
+                sRow = sRow + "<td>" + valor_celda[1] + "</td>";
+                // Se recorren las columnas que contienen las notas para extraer su valor
+                $.each(celdas, function(index, valor) {
+                  // Se guarda la coordenada para acceder al valor
+                  var adicional = hoja[valor + y]
+                  var porcentaje = hoja[celdas_porc[index] + 5].v
+                  if (porcentaje > 0) {
+                    // Se almacena el valor para agregarlo
+                    var valor_adicional = (adicional ? adicional.v : undefined);
+                    // Se verifica que no sea undefined y se agrega con un titulo
+                    if (valor_adicional !== undefined){
+                      // Contando cuantos th para agregar el titulo
+                      var contando = 0;
+                      contando = $("#titulo_"+id).find("th");
+                      // Igualando el numero de notas al numero de titulos existentes
+                      if ((index+1) === (contando.length-2)){
+                        nota = "<th style='text-align:center;border:0;'><span data-toggle='tooltip' title='' class='badge bg-light-blue'>Nota</span></th>"
+                        $("#titulo_"+id).append(nota);
+                      }
+                      // Se agrega el valor de la nota
+                      sRow = sRow + "<td style='text-align:center;'>" + valor_adicional + "</td>";
+                    }
+                    else{
+                      sRow = sRow + "<td style='background-color: red;'></td>";
+                    }
+                  }
+
+
+                  
+                });
+              }
+          // Si es indefinido el valor sale de la condicion
+          else
+            break;
+          // Se cierra la columna
+          sRow = sRow + "</tr>";
+          // Se incrementa en uno el valor de las filas a recorrer
+          y += 1;
+          // Se agrega la columna creada a la tabla
+          $("#table_"+id).append(sRow);
+        };
+        // Se incrementa el numero para la siguiente tabla
+        id += 1;
+      });
+
+    };
+    // Se finaliza y se lee el archivo
+    reader.readAsBinaryString(oFile);
+  }
+
+function ids(curso, lapso, materia){
+  this.curso = curso;
+  this.lapso = lapso;
+  this.materia = materia;
+}
+
+function objnota(valor){
+  this.nota = valor;
+} 
+
+function creardata(form){
+  // Cantidad de hojas cargadas
+  var x = form;
+  // Se recorren las tablas para tomar los valores a enviar
+  for (i=1; i<=x.length; i++) {
+    // Se vacia el arreglo para cada hoja
+    predata = [];
+    // Se agregan los ids escenciales de la seccion, lapso y materia
+    var apuntadores  = new ids(parseInt(document.getElementsByName("pkcurso_"+i)[0].value), parseInt(document.getElementsByName("pklapso_"+i)[0].value), parseInt(document.getElementsByName("pkmateria_"+i)[0].value));
+    predata.push(apuntadores);
+    // Se recorren las columnas de la tabla por su id
+    $("#table_"+i+" tbody tr").each(function (index) {
+        
+      // Se crea el objeto alumno
+      var alumno = new Object();
+      // Se crea el arreglo para las notas
+      var notas = [];
+      // Se recorren las filas de la tabla
+      $(this).children("td").each(function (index2) 
+        {
+          if (index2 === 1){
+            // Se guarda el valor de la cedula en el objeto
+            alumno["cedula"] = $(this).text();
+          };
+          if (index2 > 2){
+            // Se crean los objetos notas y se agregan al arreglo
+            valor = new objnota(parseInt($(this).text()));
+            notas.push(valor)
+          };
+        });
+      // Se agrega el arreglo de las notas al objeto alumno y se verifica que no este vacio
+      if (notas && notas.length){
+        alumno["notas"] = notas;
+      }
+      // Se agrega el objeto alumno al arreglo de la data correspondiente
+      predata.push(alumno);
+    });
+  // Se agrega la data correspondiente al arreglo final
+  enviar.push(predata);
+  }
+  // Retornamos el arreglo final
+  return enviar;
+}
+
+var registrar = function(){
+  $("form").on("submit", function(e){
+    e.preventDefault();
+    objetos = creardata($(this).find("tbody"));
+    var total = {};
+    for (k=0;k<objetos.length;k++){
+      total["data_"+k] = objetos[k];
+    }
+    console.log(document.getElementById('my_file_input').files[0].name);
+    var file = document.getElementById('my_file_input').files[0].name;
+    $.ajax({
+
+      url: 'insertar_notas/',
+      type: 'POST',
+      dataType: "json",
+      data: {'data': JSON.stringify(total), 'archivo': file},
+      success: function(data) {
+        console.log("todo ok");
+      },
+      error: function(jqXHR, textStatus, error) {
+        console.log("error");
+      }
+      
+    });
+  });
+}
+</script>
+
+<script src="{% static "plugins/js-xls-master/dist/xlsx.full.min.js" %}"></script>
+<script src="{% static "plugins/js-xls-master/dist/shim.js" %}"></script>
+
+{% endblock %}

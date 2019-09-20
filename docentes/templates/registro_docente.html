@@ -1,0 +1,124 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block contenido %}
+  <!-- page content -->
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Ingresar Docente</h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content">
+              <div class="x_title">
+                <h2>Registrar Datos</h2>
+                <div class="clearfix"></div>
+              </div>
+              {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <strong>Upps!</strong> Ocurrio un error, verifique los datos en intente nuevamente.
+                </div>
+                {{form.cedula.label_tag}}
+                {{form.cedula.errors}}
+              {% endif %}
+
+              {% if mensaje %}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <strong>Registro exitoso!</strong> Datos ingresados correctamente.
+                </div>
+              {% endif %}
+              
+              <br />
+              <form class="form-horizontal form-label-left input_mask" method="POST">
+              {% csrf_token %}
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                  {{form.nombres}}
+                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                  {{form.apellidos}}
+                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                  {{form.cedula}}
+                  <span class="fa fa-list-alt form-control-feedback left" aria-hidden="true"></span>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                  {{form.correo}}
+                  <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Nacionalidad: </label>
+                  <div class="col-md-6 col-sm- col-xs-12">
+                    {{form.nacionalidad}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Genero: </label>
+                  <div class="col-md-6 col-sm- col-xs-12">
+                    {{form.sexo}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha de Nacimiento: </label>
+                  <div class="col-md-6 col-sm- col-xs-12">
+                    {{form.fchanac}}
+                  </div>
+                </div>
+                
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <a href="{{request.META.HTTP_REFERER}}" class="btn btn-danger">Cancelar</a>
+                    <button class="btn btn-primary" type="reset" value="Reset">Limpiar</button>
+                    <button type="submit" class="btn btn-success">Enviar</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /page content -->
+{% endblock %}
+
+{% block jsadd %}
+  <!-- DatePicker -->
+  <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
+  <script>
+
+    $('#datepicker').datepicker({
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+    });
+    
+  </script>
+{% endblock %}
